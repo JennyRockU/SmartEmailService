@@ -17,7 +17,7 @@ SendEmailAPI (WebAPI) :arrow_down:
       
 (sends the message to queue)
 
-Email is processed by one of the vendors: :arrow_down:
+Email message is picked up from queue and processed by one of the vendors: :arrow_heading_up:
 
 - SendGrid
 - MailGun
@@ -62,6 +62,24 @@ This allows to track errors and the application usage in an easy way, it additio
 Each email sender role, and the SendEmailAPI report the exceptions to Application Insights telemtry.
 
 ## External Libraries
+Some external libraries and SDKs were installed to help this flow running.
+
+Libraries mostly include the designated code for using the email providers' API, such as:
+- smtpapi-csharp (for SendGrid)
+- restSharp (helping to create web requests in .NET)
+
+And SDKs: 
+- Application Insights (for application usage and error monitoring)
+- Azure Storage (for the message queue)
 
 ## Technology Choices
+This application is for the most part built in C#, and uses all .Net technologies.
+While can work with other languages as well, on different levels, C# is the language in which I am most expiriencied.
+Therefore, .Net was prioritized over other more popluar backend technologies in order to avoid hurting the quality of the applocation code due to lack of expirence.
 
+The frontend application, static site, uses a little bit of Javascript.
+
+## Website (Frontend)
+The static [website](http://smartemailservice.azurewebsites.net), includes the API documentation and a form that allows to test the API by submitting a form with the email details. The form calls the SendEmailAPI.
+
+As this is a backend project, this site has very minimal functionality and is simply intended to demonstrate the API.
