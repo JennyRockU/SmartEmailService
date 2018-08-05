@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "SmartEmailService API";
+}
+
+
+<div class="row">
+    <div class="col-md-10">
+        <h2><span class="logo.text" style="color:black">Smart</span>EmailService API</h2>
+        <p> Simple and easy API service to send emails from your app. 
+            Read the <a href="#documentation">API documention</a> or give it a quick try 
+            yourself using the below form.
+        </p>
+    </div>
+    <div class="col-md-12">
+        <h3>Try It!</h3>
+        <div class="formWrapper">
+            <div class="form">
+                <div class="wrapper">
+                    <form>
+                    <div class="inputWrapper"><input type="email" class="input" title="From" required="" pattern=".{2,}" placeholder="Sender email address"></div>
+                    <div class="spacer"></div>
+                    <div class="inputWrapper"><input type="email" class="input" title="To" required="" pattern=".{2,}" placeholder="Recipient email address"></div>
+                    <div class="spacer"></div>
+                    <div class="inputWrapper"><input type="text" class="input" title="Title" placeholder="Subject"></div>
+                    <div class="spacer"></div>
+                        <textarea pattern=".{3,}" class="textarea input" placeholder="Message"></textarea>
+                        <br>
+                        <p id='submissionMessage'><span>
+                            <span id='success'></span>
+                            <span id='failed'></span>
+                        </span></p>
+                        <div class="buttonWrapper"><button type="submit">Send</button></div>
+
+                        </form></div>
+                                </div>
+                                    </div>
+    </div>
+    <div class="col-md-12">
+        <h2>API Documentation</h2>
+        <p>Follow this guide to get started and integrate the API in your application.</p>
+            <span class="topic" id="documentation">Endpoint</span>
+            <p>Base URL:    <code>http://smartsendemailapi.azurewebsites.net/api/</code> </p>
+            <br>
+            <h4>emails/SendEmail</h4>
+            <p>Composes an email message and immediately queues it for sending. The call uses a POST method and includes the following parameters:</p>
+            <br>
+            <h4>Request Parameters</h4>
+            <span class="requestParam">To</span>
+            <p>Comma-separated list of the recipient email addresses (e.g: john@hostname.com,kimjones@hostname.com,phil@hostname.net).</p>
+            <p>If any of the email address is not in a valid format the whole message will be delivered. In this case, the error message will indicate that recipients are not valid.</p>
+
+            <p>Type: String</p>
+            <p>Required: Yes</p>
+            <br>
+            <span class="requestParam">From</span>
+            <p>The sender email address. It will appear in the sender section in the email the recipient receives (e.g: jane@hostname.com).</p>
+            <p>It is required that this address is in a correct email format in order for the email to go through.</p>
+
+            <p>Type: String</p>
+            <p>Required: Yes</p>
+            <br>
+            <span class="requestParam">Subject</span>
+            <p>The subject line text of the email.</p>
+
+            <p>Type: String</p>
+            <p>Required: No</p>
+            <br>
+
+            <span class="requestParam">Body</span>
+            <p>The content of the email message. Sent as the Post method body.</p>
+
+            <p>Type: String</p>
+            <p>Required: No</p>
+            <br>
+            <h4>Example Call</h4>
+            <p>
+                <pre><code>POST</code></pre>
+                <pre><code>http://smartsendemailapi.azurewebsites.net/api/emails/SendEmail?to=johndoe@gmail.com&from=raymond@outlook.com&subject=Our new newsletter is out!</code></pre>
+                <pre><code><code>Body: Hi John, I am contacting you as I am happy to announce the release of our latest newsletter...</code></code></pre>
+            </p>
+            <br>
+            <h4>Response</h4>
+            <p>When a call is successful this means the email message has been queued for sending. In such case the HTTP status code will be 200, with the following message included in the HTTP response body <code>"Email created"</code></p>
+            <p>All APIs return standard HTTP error code formats.</p>
+
+            <br>
+            <h4>Errors</h4>
+            <p>When an error message is received from the API this could be due to something being wrong with the request or a problem on our server end. Errors with a request problem will return a 400 status code and a JSON that contains more details on the failure:</p>
+            <p><pre><code>Status: 400 Bad Request</code></pre></p>
+            <p><pre><code>&#123;
+    "Message": "Sender email is either missing or not in a correct format" 
+&#125;
+</code>
+</pre>
+            </p>
+            <p>In other cases a 500 server error code will be returned to indicate on an internal failure. In that case, either try again 
+                or contact our developer <a href="mailto:jennyrukman@gmail.com"> support.</a>
+            </p>
+            <br>
+            <span class="topic" id="documentation">Feature Availability</span>
+            <p>SmartEmailService unifies various different email service vendors to ensure your email is being sent successfully, in the most rapid way.</p>
+            <p>This is currently the API’s first version and as it is focused to deliver your emails in the smoothest way, it currently supports the most basic capabilities of sending an email. While it is possible that later on more features will be added currently options such as; Bcc, attachments, unsending the email, configuring the sender name are not supported.</p>
+
+
+        </p>
+    </div>
+   
+</div>
