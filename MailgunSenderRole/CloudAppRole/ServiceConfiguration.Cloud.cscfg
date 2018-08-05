@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="MailgunSender" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="5" osVersion="*" schemaVersion="2015-04.2.6">
+  <Role name="WorkerRole">
+    <Instances count="1" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="mainemailstorage_AzureStorageConnectionString" value="DefaultEndpointsProtocol=https;AccountName=mainemailstorage;AccountKey=a0LfUP0nzRqFQ7z2PeSMCNaDm1H4mR/9ISYfcVDM7Eb47gyPhDjNCo3WGm5IRNiC4QOupDlBLM0IsVhtGvbY0w==;EndpointSuffix=core.windows.net" />
+      <Setting name="APPINSIGHTS_INSTRUMENTATIONKEY" value="c8961c86-1be8-44a8-8fbf-9975a8cadd45" />
+    </ConfigurationSettings>
+  </Role>
+</ServiceConfiguration>
