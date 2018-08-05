@@ -17,17 +17,17 @@ Email Message from User :arrow_down:
       
 (sends the message to queue)
 
-**_Cloud Message Queue*_*
+**_Cloud Message Queue_**
 
-**_Email Sender Roles_**
+**_Email Sender Roles_** :arrow_heading_up:
 
-Email message is picked up from queue and processed by one of the vendors: :arrow_heading_up:
+Email message is picked up from queue and processed by one of the vendors:
 
 - SendGrid
 - MailGun
 
 ## Scalability
-The fact that the different email vendors are running as seperate applications in the cloud, and barely share any code (except for the [IMailSender interface](../IMailSender.cs)), allows a lot of scaling flexibilty.
+The fact that the different email vendors are running as seperate applications in the cloud, and barely share any code (except for the [IMailSender interface](../master/MainSender/IMailSender.cs)), allows a lot of scaling flexibilty.
 
 For example, once our SendEmailService grows larger and fills up the queue with a lot of email messages which await to be processed, it is very easy to add another application to help reduce the load and read from this queue.
 All that is needed is to select another email service provider (e.g.: Amazon SES, Sparkpost) and deploy a role that is reading from the same queue, that's it.
@@ -84,11 +84,12 @@ Therefore, .Net was prioritized over other more popluar backend technologies in 
 The frontend application, static site, uses a little bit of Javascript.
 
 ## Website (Frontend)
-The static [website](http://smartemailservice.azurewebsites.net) ([EmailService](../EmailService%20-%20website) files), includes the API documentation and a form that allows to test the API by submitting a form with the email details. The form calls the SendEmailAPI.
+The static [website](http://smartemailservice.azurewebsites.net) ([EmailService](../master/EmailService%20-%20website) files), includes the API documentation and a form that allows to test the API by submitting a form with the email details. The form calls the SendEmailAPI.
 
 As this is a backend project, this site has very minimal functionality and is simply intended to demonstrate the API.
 
 
-Love getting feedback and making my applications even better, let's get in touch!
+##
+_Love getting feedback and making my applications even better, let's get in touch!_
 
 [Jenny R](https://www.linkedin.com/in/jennyrukman/).
