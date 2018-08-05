@@ -47,6 +47,18 @@ While this current architecture is highly useful for scalability purposes, as th
 
 While these limitations cannot be ignored, taking all of this into account along with the app requirements, these are small prices to pay in order to allow greater flexibility in scale. Additionally, there are descent workarounds for these issues, e.g.: moving some settings to a configuration file.
 
+## Tests
+The code inlcudes unit tests for each the main methods and each of the email sender roles.
+These are simple sanity tests to run after each code in a method.
+
+The tests can be found here:
+
+-[Sendgrid sender app tests](../master/SendgridSenderRole/SendgridSendeUnitTests).
+
+-[Maigun sender app tests](../master/MailgunSenderRole/MailgunSenderUnitTests).
+
+Integration and worker role and API tests are needed as well.
+
 ## Supported Features
 The application currently uses only two email providers, but there is nothing that is standing in the way of adding additional vendors (the only consideration was a time constraint).
 
