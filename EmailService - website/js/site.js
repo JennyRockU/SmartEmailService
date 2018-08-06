@@ -1,23 +1,16 @@
-﻿
+
 // send the user form content to the EmailService API
 async function SendEmail(recipient, sender, title, body) {
 
-    const url = getApiUrl(recipient, sender, title);    
+    const url = getApiUrl(recipient, sender, title); 
     
     try {
         var res = await fetch(url, {
             method: "post",
-            mode: 'no-cors',
             body: body
-        }).then(response => response)
-        .catch(function(e) {
-            return 'faild';
-        })
-        .then(function(response) {
-            return 'success';
         });
 
-        console.log(res);
+        console.log(res.statusText);
         return res;
 
     } catch (exception){
@@ -37,8 +30,10 @@ function getApiUrl(recipient, sender, title) {
 // send the user submitted content upon click on the 'send' button
 $(document).ready(function () { 
     $('.form').on('submit', async function (event) {
-    
+        
+        showSendingFeedbackMessage();
         event.preventDefault();
+
         console.log('Form submitted!');
     
             try {
@@ -53,7 +48,8 @@ $(document).ready(function () {
                 var response = await SendEmail(to, from, title, content);
 
                 // display feedback message
-                if (response == "success") {
+                let isSuccess = response != undefined && response.status == 200;
+                if (isSuccess) {
                     showSuccessMessage();
                 } else {
                     showFailureMessage();
@@ -75,15 +71,27 @@ function goToDocumentation() {
     }));
 }
 
-function showSuccessMessage(){
+function showSendingFeedbackMessage(){
 
     $('.buttonWrapper')[0].style.display = "none";
+    $('#sendingFeedback')[0].innerHTML = 'Sending... please wait.';
+}
+
+function showSuccessMessage(){
+
+    $('#failed')[0].style.display = "none";
+    $('#sendingFeedback')[0].style.display = "none";
     $('#success')[0].innerHTML = 'Thank you, your email is on its way!';
 }
 
 function showFailureMessage(){
+
+    $('#sendingFeedback')[0].style.display = "none";
+
     $('#failed')[0].innerHTML = 
                         'Sorry, something went wrong. ' +
                         'Please try again or contact our <a href="mailto:jennyrukman@gmail.com">support</a>.';
 
+    $('.buttonWrapper')[0].style.display = "block";
+      
 }
