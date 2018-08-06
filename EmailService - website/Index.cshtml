@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "SmartEmailService API";
 }
 
@@ -26,11 +26,11 @@
                         <textarea pattern=".{3,}" class="textarea input" placeholder="Message"></textarea>
                         <br>
                         <p id='submissionMessage'><span>
+                            <span id='sendingFeedback'></span>
                             <span id='success'></span>
                             <span id='failed'></span>
                         </span></p>
                         <div class="buttonWrapper"><button type="submit">Send</button></div>
-
                         </form></div>
                                 </div>
                                     </div>
@@ -38,10 +38,11 @@
     <div class="col-md-12">
         <h2>API Documentation</h2>
         <p>Follow this guide to get started and integrate the API in your application.</p>
+            <br>
             <span class="topic" id="documentation">Endpoint</span>
             <p>Base URL:    <code>http://smartsendemailapi.azurewebsites.net/api/</code> </p>
             <br>
-            <h4>emails/SendEmail</h4>
+            <h4>emails/SendEmail Call</h4>
             <p>Composes an email message and immediately queues it for sending. The call uses a POST method and includes the following parameters:</p>
             <br>
             <h4>Request Parameters</h4>
@@ -99,7 +100,7 @@
             <br>
             <span class="topic" id="documentation">Feature Availability</span>
             <p>SmartEmailService unifies various different email service vendors to ensure your email is being sent successfully, in the most rapid way.</p>
-            <p>This is currently the API’s first version and as it is focused to deliver your emails in the smoothest way, it currently supports the most basic capabilities of sending an email. While it is possible that later on more features will be added currently options such as; Bcc, attachments, unsending the email, configuring the sender name are not supported.</p>
+            <p>This is currently the API’s first version and since it is focused on delivering your emails in the smoothest way, currently only the most basic capabilites of sending an email are supported. It is possible that later on more features, such as; bcc, attachments and unsending, will be added.</p>
 
 
         </p>
