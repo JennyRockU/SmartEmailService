@@ -1,4 +1,4 @@
-﻿using SendGrid;
+using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
 using System.Configuration;
@@ -20,7 +20,6 @@ namespace SendgridSender
                 TelemetryClient telelemtry,
                 CancellationToken cancellationToken)
             {
-                var isSucess = true;
 
                 try
                 {
@@ -38,16 +37,15 @@ namespace SendgridSender
                         htmlContent: email.Body);
 
                     var response = await client.SendEmailAsync(msg, cancellationToken);
-                    isSucess = response.StatusCode == System.Net.HttpStatusCode.Accepted;
+                    return response.StatusCode == System.Net.HttpStatusCode.Accepted;
                 }
                 catch (Exception e)
                 {
                     telelemtry.TrackException(e,
-                        new Dictionary<string, string> { { this.GetType().Name, email.Subject } });
-                    isSucess = false;
+                        new Dictionary<string, string> { [this.GetType().Name] = email.Subject });
+                    return false;
                 }
 
-                return isSucess;
             }
         }
 }
