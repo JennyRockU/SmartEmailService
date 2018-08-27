@@ -1,30 +1,50 @@
-﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO.Compression;
-using System.Web;
 using System.Threading.Tasks;
 using Microsoft.Azure;
+using System.Xml.Serialization;
+using System.IO;
+using System.Xml;
 
 namespace SendEmailApi
 {
-    public class EmailHandler
+    public static class EmailHandler
     {
+        // get the cloud queue refrence
         private static readonly CloudStorageAccount StorageAccount = 
             CloudStorageAccount.Parse(CloudConfigurationManager.GetSetting("mainemailstorage_AzureStorageConnectionString"));
+        private static CloudQueueClient QueueClient = StorageAccount.CreateCloudQueueClient();
+        private static CloudQueue Queue = QueueClient.GetQueueReference("email-queue");
 
-        public static async Task SendEmailToQueue(EmailDetails email)
+        public static async Task AddEmailToQueue(EmailDetails email)
         {
-            var queueClient = StorageAccount.CreateCloudQueueClient();
-            
-            var queue = queueClient.GetQueueReference("email-queue");
-            await queue.CreateIfNotExistsAsync();
+            // make sure the queue refrence exists in the cloud
+           await Queue.CreateIfNotExistsAsync();
 
-            var msg = new CloudQueueMessage(email.GetMessageQueueString());
-            await queue.AddMessageAsync(msg);
+            // create the xml message to store
+            var xmlAsString = Serialize(email);
+            var msg = new CloudQueueMessage(xmlAsString);
+
+            // add the message to queue
+            await Queue.AddMessageAsync(msg);
+           
+        }
+
+
+        public static string Serialize<T>(this T data)
+        {
+            var xml = string.Empty;
+            if (data == null) return xml;
+
+            var xmlSerilizer = new XmlSerializer(typeof(T));
+            using (var sw = new StringWriter())
+            {
+                using (var writer = XmlWriter.Create(sw))
+                {
+                    xmlSerilizer.Serialize(writer, data);
+                    return sw.ToString();
+                }
+            }
         }
     }
 }
