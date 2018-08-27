@@ -1,4 +1,4 @@
-﻿using MainSender;
+using MainSender;
 using Microsoft.ApplicationInsights;
 using RestSharp;
 using RestSharp.Authenticators;
@@ -18,7 +18,6 @@ namespace MailgunSender
     {
         public string ApiKey => ConfigurationManager.AppSettings["apiKey"];
         private readonly string BaseUrl = "https://api.eu.mailgun.net/v3";
-
         private readonly string SandboxDomain = "sandbox7991e4e8835c480d858e978b822ef530.mailgun.org";
         private readonly string AppDomain = "smartemailservice.azurewebsites.net";
 
@@ -39,10 +38,14 @@ namespace MailgunSender
                 request.AddParameter("domain", AppDomain, ParameterType.UrlSegment);
                 request.Resource = "{domain}/messages";
                 request.AddParameter("from", $"{email.Sender} <mailgun@{AppDomain}>");
-                request.AddParameter("from", email.Sender);
-                request.AddParameter("to", email.Recipients.First());
                 request.AddParameter("subject", email.Subject);
                 request.AddParameter("text", email.Body);
+
+                foreach(var recipient in email.Recipients)
+                {
+                    request.AddParameter("to", recipient);
+                }
+
                 request.Method = Method.POST;
                 var res = await client.ExecuteTaskAsync<string>(request);
 
@@ -52,7 +55,7 @@ namespace MailgunSender
             {
 
                 telelemtry.TrackException(e,
-                    new Dictionary<string, string> { { this.GetType().Name, email.Subject } });
+                    new Dictionary<string, string> { [this.GetType().Name] = email.Subject } );
                 isSucess = false;
             }
 
@@ -63,7 +66,7 @@ namespace MailgunSender
         {
             var client = new RestClient
             {
-                BaseUrl = new Uri(BaseUrl),
+                BaseUrl = new Uri("https://api.mailgun.net/v3"),
                 Authenticator = new HttpBasicAuthenticator("api", ApiKey)
             };
 
@@ -71,14 +74,17 @@ namespace MailgunSender
             request.AddParameter("domain", SandboxDomain, ParameterType.UrlSegment);
             request.Resource = "{domain}/messages";
             request.AddParameter("from", "Mailgun Sandbox <postmaster@sandbox7991e4e8835c480d858e978b822ef530.mailgun.org>");
-            request.AddParameter("from", email.Sender);
-            request.AddParameter("to", email.Recipients.First());
             request.AddParameter("subject", email.Subject);
             request.AddParameter("text", email.Body);
+
+            foreach (var recipient in email.Recipients)
+            {
+                request.AddParameter("to", recipient);
+            }
+
             request.Method = Method.POST;
             var res = client.Execute(request);
             return res.IsSuccessful;
-            //TODO need to check whether message was actually sent
         }
 
     }
