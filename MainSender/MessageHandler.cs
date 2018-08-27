@@ -1,16 +1,19 @@
-﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights;
 using Microsoft.WindowsAzure.Storage.Queue;
+using SendEmailApi;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace MainSender
 {
-    public class MessageHandler
+    public static class MessageHandler
     {
         private static readonly string AppInsightsKey = ConfigurationManager.AppSettings["instrumentalKey"];
         private static readonly TelemetryClient telemetry = new TelemetryClient { InstrumentationKey = AppInsightsKey };
@@ -34,18 +37,21 @@ namespace MainSender
                     return true;
                 }
 
-                var emailDetails = SendEmailApi.EmailDetails.UnwrapMessage(queueMsg.AsString);
+                var xSerilizer = new XmlSerializer(typeof(EmailDetails));
+                var emailDetails = (EmailDetails)xSerilizer.Deserialize(new StringReader(queueMsg.AsString));
                 return await emailVendor.SendEmail(emailDetails, telemetry, cancellationToken);
 
             } catch (Exception e)
             {
                 //should not happen as there is a catch inside
                 telemetry.TrackException(e, 
-                    new Dictionary<string, string> { { emailVendor.GetType().Name, queueMsg?.AsString} });
+                    new Dictionary<string, string> { [emailVendor.GetType().Name] = queueMsg?.AsString });
 
                 return false;
             }
     
         }
+
+       
     }
 }
