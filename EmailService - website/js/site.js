@@ -1,13 +1,24 @@
 
+async function GetappId() {
+
+   let settingRes = await fetch('./settings.json');
+   let data = await settingRes.json();
+
+    return data.AppSettings.ApiKey;
+}
+
+
 // send the user form content to the EmailService API
 async function SendEmail(recipient, sender, title, body) {
 
-    const url = getApiUrl(recipient, sender, title); 
+    const url = getApiUrl(recipient, sender, title);
+    let token = await GetappId();
     
     try {
         var res = await fetch(url, {
             method: "post",
-            body: body
+            body: body,
+            headers: { 'Authorization': token },
         });
 
         console.log(res.statusText);
